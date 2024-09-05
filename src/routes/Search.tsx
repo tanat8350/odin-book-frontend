@@ -37,7 +37,7 @@ export default function Search() {
           )
           .map((user: User) => {
             return (
-              <li>
+              <li key={user.id}>
                 <Link to={`/user/${user.id}`}>
                   {user.displayName} @{user.username}
                 </Link>

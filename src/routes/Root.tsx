@@ -26,6 +26,9 @@ export default function Root() {
           {user ? (
             <>
               <li>
+                <Link to="/request">Request</Link>
+              </li>
+              <li>
                 <Link to={`/user/${user.id}`}>
                   {user.displayName} @{user.username}
                 </Link>

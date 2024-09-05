@@ -3,11 +3,10 @@ import { useUser } from '../configs/outletContext';
 import api from '../configs/api';
 import PostCard from '../components/PostCard';
 import { PostCardProps } from '../configs/type';
-import { queryClient } from '../main';
 
 export default function Home() {
   const { user } = useUser();
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, refetch } = useQuery({
     queryKey: ['posts'],
     queryFn: async () => {
       const res = await api.get('/post');
@@ -30,7 +29,7 @@ export default function Home() {
       return;
     }
     target.post.value = '';
-    queryClient.invalidateQueries(['posts']);
+    refetch();
   };
 
   if (isLoading) return <p>Loading</p>;

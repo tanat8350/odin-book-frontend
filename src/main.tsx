@@ -11,6 +11,7 @@ import Profile from './routes/Profile.tsx';
 import ProfileEdit from './routes/ProfileEdit.tsx';
 import Search from './routes/Search.tsx';
 import Post from './routes/Post.tsx';
+import Request from './routes/Request.tsx';
 
 const router = createBrowserRouter([
   {
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
       {
         path: 'search',
         element: <Search />,
+      },
+      {
+        path: 'request',
+        element: <Request />,
       },
       {
         path: 'user/edit',

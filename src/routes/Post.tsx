@@ -5,11 +5,18 @@ import PostCard from '../components/PostCard';
 import CommentCard from '../components/CommentCard';
 import { type Comment } from '../configs/type';
 import { useUser } from '../configs/outletContext';
-import { queryClient } from '../main';
 
 export default function Post() {
   const { user } = useUser();
   const { id } = useParams();
+
+  const { data, isLoading, refetch } = useQuery({
+    queryKey: ['post'],
+    queryFn: async () => {
+      const res = await api.get(`/post/${id}`);
+      return await res.data;
+    },
+  });
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,17 +32,10 @@ export default function Post() {
       console.log('fail to comment');
       return;
     }
-    queryClient.invalidateQueries(['post']);
     target.comment.value = '';
+    refetch();
   };
 
-  const { data, isLoading } = useQuery({
-    queryKey: ['post'],
-    queryFn: async () => {
-      const res = await api.get(`/post/${id}`);
-      return await res.data;
-    },
-  });
   if (isLoading) return <p>Loading</p>;
   return (
     <>
