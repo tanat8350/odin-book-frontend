@@ -27,6 +27,7 @@ export default function Profile() {
       {data.posts.map((post: PostCardProps) => (
         <PostCard
           key={post.id}
+          id={post.id}
           author={post.author}
           message={post.message}
           timestamp={post.timestamp}

@@ -9,6 +9,7 @@ export default function ProfileEdit() {
   const { user, setUser } = useUser();
   const [displayName, setDisplayName] = useState('');
   const [bio, setBio] = useState('');
+  const [isPrivate, setIsPrivate] = useState(false);
 
   const { data, isLoading } = useQuery({
     queryKey: ['profileEdit'],
@@ -17,6 +18,7 @@ export default function ProfileEdit() {
       const data = await res.data;
       setDisplayName(data.displayName);
       setBio(data.bio);
+      setIsPrivate(data.private);
     },
   });
 
@@ -25,6 +27,7 @@ export default function ProfileEdit() {
     const res = await api.put(`/user/${user?.id}/profile`, {
       displayName,
       bio,
+      private: isPrivate,
     });
     const data = await res.data;
     if (!data) {
@@ -72,6 +75,27 @@ export default function ProfileEdit() {
             id="profileImage"
             accept="image/jpeg, image/jpg, image/png"
           ></input>
+        </div>
+        <div>
+          Account type:{' '}
+          <button
+            className={isPrivate ? 'activeButton' : ''}
+            onClick={(e) => {
+              e.preventDefault();
+              setIsPrivate(true);
+            }}
+          >
+            Private
+          </button>{' '}
+          <button
+            className={!isPrivate ? 'activeButton' : ''}
+            onClick={(e) => {
+              e.preventDefault();
+              setIsPrivate(false);
+            }}
+          >
+            Public
+          </button>
         </div>
         <button type="submit">Update</button>
       </form>
