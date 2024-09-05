@@ -2,6 +2,7 @@ import { Link, useParams } from 'react-router-dom';
 import api from '../configs/api';
 import { useQuery } from 'react-query';
 import PostCard from '../components/PostCard';
+import { PostCardProps } from '../configs/type';
 
 export default function Profile() {
   const { id } = useParams();
@@ -23,7 +24,7 @@ export default function Profile() {
       <p>
         Following {data.following.length} Followed by {data.followedBy.length}
       </p>
-      {data.posts.map((post) => (
+      {data.posts.map((post: PostCardProps) => (
         <PostCard
           key={post.id}
           author={post.author}

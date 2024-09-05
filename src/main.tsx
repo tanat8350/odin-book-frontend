@@ -9,6 +9,8 @@ import Home from './routes/Home.tsx';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import Profile from './routes/Profile.tsx';
 import ProfileEdit from './routes/ProfileEdit.tsx';
+import Search from './routes/Search.tsx';
+import Post from './routes/Post.tsx';
 
 const router = createBrowserRouter([
   {
@@ -28,6 +30,10 @@ const router = createBrowserRouter([
         element: <Login />,
       },
       {
+        path: 'search',
+        element: <Search />,
+      },
+      {
         path: 'user/edit',
         element: <ProfileEdit />,
       },
@@ -35,11 +41,15 @@ const router = createBrowserRouter([
         path: 'user/:id',
         element: <Profile />,
       },
+      {
+        path: 'post/:id',
+        element: <Post />,
+      },
     ],
   },
 ]);
 
-const queryClient = new QueryClient();
+export const queryClient = new QueryClient();
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

@@ -16,7 +16,10 @@ export default function Signup() {
       passwordVerify: target.passwordVerify.value,
     });
     const data = await res.data;
-    console.log(data);
+    if (!data) {
+      console.log('fail to signup');
+      return;
+    }
     navigate('/login');
   };
   return (

@@ -16,7 +16,6 @@ export default function Login() {
       password: target.password.value,
     });
     const data = await res.data;
-    console.log(data);
     setUser(data);
     navigate('/');
   };
