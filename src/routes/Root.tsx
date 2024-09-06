@@ -11,6 +11,7 @@ export default function Root() {
       id: 1,
       username: 'a',
       displayName: 'a1',
+      requestPending: [],
     });
   }, []);
   return (
@@ -26,7 +27,9 @@ export default function Root() {
           {user ? (
             <>
               <li>
-                <Link to="/request">Request</Link>
+                <Link to="/request">
+                  Request ({user.requestPending.length})
+                </Link>
               </li>
               <li>
                 <Link to={`/user/${user.id}`}>
