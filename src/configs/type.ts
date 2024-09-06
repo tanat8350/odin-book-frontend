@@ -10,14 +10,6 @@ export interface Context {
 }
 
 // Post card
-interface Author {
-  username: string;
-  id: number;
-  displayName: string;
-}
-interface Likes {
-  length: number;
-}
 interface Comments {
   length: number;
 }
@@ -25,8 +17,8 @@ export interface PostCardProps {
   id: number;
   message: string;
   timestamp: string;
-  author: Author;
-  likes: Likes;
+  author: User;
+  likes: User[];
   comments: Comments;
 }
 
@@ -34,7 +26,7 @@ export interface Comment {
   id: number;
   message: string;
   timestamp: string;
-  author: Author;
+  author: User;
 }
 export interface CommentCardProps {
   comment: Comment;
