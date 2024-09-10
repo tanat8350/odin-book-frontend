@@ -70,3 +70,7 @@ button:focus-visible {
 .activeButton {
   background-color: #646cff;
 }
+
+.imagePreview {
+  max-height: 100px;
+}

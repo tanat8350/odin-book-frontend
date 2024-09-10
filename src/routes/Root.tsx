@@ -1,19 +1,22 @@
 import { useEffect, useState } from 'react';
 import { Link, Outlet } from 'react-router-dom';
 import { type User } from '../configs/type';
+import api from '../configs/api';
+import { useQuery } from 'react-query';
 
 export default function Root() {
   const [user, setUser] = useState<User | null>(null);
 
-  // to remove later
-  useEffect(() => {
-    setUser({
-      id: 1,
-      username: 'a',
-      displayName: 'a1',
-      requestPending: [],
-    });
-  }, []);
+  useQuery({
+    queryFn: async () => {
+      if (localStorage.getItem('userid')) {
+        const res = await api.get(`/user/${localStorage.getItem('userid')}`);
+        const data = await res.data;
+        setUser(data);
+      }
+    },
+  });
+
   return (
     <>
       <nav>
@@ -37,7 +40,17 @@ export default function Root() {
                 </Link>
               </li>
               <li>
-                <Link to="/logout">Logout</Link>
+                <Link
+                  to=""
+                  onClick={async (e) => {
+                    e.preventDefault();
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('userid');
+                    setUser(null);
+                  }}
+                >
+                  Logout
+                </Link>
               </li>
             </>
           ) : (

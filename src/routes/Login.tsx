@@ -11,12 +11,17 @@ export default function Login() {
       username: { value: string };
       password: { value: string };
     };
-    const res = await api.post('/login', {
+    const res = await api.post('/auth/login', {
       username: target.username.value,
       password: target.password.value,
     });
     const data = await res.data;
-    setUser(data);
+    if (!data.user || !data.token) {
+      return console.log('failed to login');
+    }
+    localStorage.setItem('token', data.token);
+    localStorage.setItem('userid', data.user.id);
+    setUser(data.user);
     navigate('/');
   };
   return (
@@ -33,6 +38,13 @@ export default function Login() {
         </div>
         <button type="submit">Login</button>
       </form>
+      <button
+        onClick={async () => {
+          window.open('http://localhost:3000/auth/github', '_self');
+        }}
+      >
+        Github
+      </button>
     </>
   );
 }

@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from 'react-query';
+import { useQuery } from 'react-query';
 import api from '../configs/api';
 import { useState } from 'react';
 import { useUser } from '../configs/outletContext';
@@ -10,8 +10,12 @@ export default function ProfileEdit() {
   const [displayName, setDisplayName] = useState('');
   const [bio, setBio] = useState('');
   const [isPrivate, setIsPrivate] = useState(false);
+  const [image, setImage] = useState({
+    src: '' as string | undefined,
+    alt: '' as string,
+  });
 
-  const { data, isLoading } = useQuery({
+  const { isLoading } = useQuery({
     queryKey: ['profileEdit'],
     queryFn: async () => {
       const res = await api.get(`/user/${user?.id}/profile`);
@@ -20,9 +24,36 @@ export default function ProfileEdit() {
       setBio(data.bio);
       setIsPrivate(data.private);
     },
+    enabled: !!user,
   });
 
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const submitImage = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const target = e.target as typeof e.target & {
+      profileImage: { files: FileList };
+    };
+    const formData = new FormData();
+    formData.append('profileImage', target.profileImage.files[0]);
+    const res = await api.put(`/user/${user?.id}/profile/image`, formData);
+    const data = await res.data;
+    if (!data) {
+      console.log('failed to update profile image');
+    }
+    setUser(data);
+    navigate(`/user/${user?.id}`);
+  };
+
+  const changeImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const target = e.target as typeof e.target & {
+      files: FileList;
+    };
+    setImage({
+      src: URL.createObjectURL(target.files[0]),
+      alt: target.files[0].name,
+    });
+  };
+
+  const submitProfile = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const res = await api.put(`/user/${user?.id}/profile`, {
       displayName,
@@ -31,16 +62,11 @@ export default function ProfileEdit() {
     });
     const data = await res.data;
     if (!data) {
-      console.log('fail to update user profile');
+      console.log('failed to update user profile');
     }
     setUser(data);
     navigate(`/user/${user?.id}`);
   };
-
-  const { mutateAsync: updateProfile } = useMutation({
-    mutationFn: onSubmit,
-    mutationKey: ['updateProfile'],
-  });
 
   if (!user) return <p>Please login</p>;
 
@@ -49,7 +75,26 @@ export default function ProfileEdit() {
   return (
     <>
       <h1>Profile Edit</h1>
-      <form onSubmit={updateProfile}>
+      <div>
+        <img
+          className="imagePreview"
+          src={image.src || user?.profileImage || ''}
+          alt={image.alt || ''}
+        />
+      </div>
+      <form onSubmit={submitImage} encType="multipart/form-data">
+        <div>
+          <label htmlFor="profileImage">Profile image: </label>
+          <input
+            type="file"
+            id="profileImage"
+            accept="image/jpeg, image/jpg, image/png"
+            onChange={changeImage}
+          ></input>
+        </div>
+        <button type="submit">Upload</button>
+      </form>
+      <form onSubmit={submitProfile}>
         <div>
           <label htmlFor="displayName">Display name: </label>
           <input
@@ -66,14 +111,6 @@ export default function ProfileEdit() {
             id="bio"
             value={bio || ''}
             onChange={(e) => setBio(e.target.value)}
-          ></input>
-        </div>
-        <div>
-          <label htmlFor="profileImage">Profile image: </label>
-          <input
-            type="file"
-            id="profileImage"
-            accept="image/jpeg, image/jpg, image/png"
           ></input>
         </div>
         <div>

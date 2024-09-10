@@ -6,6 +6,7 @@ import { PostCardProps } from '../configs/type';
 
 export default function Home() {
   const { user } = useUser();
+
   const { data, isLoading, refetch } = useQuery({
     queryKey: ['posts'],
     queryFn: async () => {

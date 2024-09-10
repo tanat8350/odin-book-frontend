@@ -10,14 +10,14 @@ export default function Signup() {
       password: { value: string };
       passwordVerify: { value: string };
     };
-    const res = await api.post('/signup', {
+    const res = await api.post('/auth/signup', {
       username: target.username.value,
       password: target.password.value,
       passwordVerify: target.passwordVerify.value,
     });
     const data = await res.data;
     if (!data) {
-      console.log('fail to signup');
+      console.log('failed to signup');
       return;
     }
     navigate('/login');

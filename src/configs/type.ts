@@ -2,6 +2,7 @@ export interface User {
   id: number;
   username: string;
   displayName: string;
+  profileImage: string;
   requestPending: User[];
 }
 
