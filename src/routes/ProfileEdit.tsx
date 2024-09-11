@@ -1,6 +1,6 @@
 import { useQuery } from 'react-query';
 import api from '../configs/api';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useUser } from '../configs/outletContext';
 import { useNavigate } from 'react-router-dom';
 
@@ -68,6 +68,22 @@ export default function ProfileEdit() {
     navigate(`/user/${user?.id}`);
   };
 
+  const submitPassword = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const target = e.target as typeof e.target & {
+      password: { value: string };
+    };
+    const res = await api.put(`/user/${user?.id}/profile/password`, {
+      password: target.password.value,
+    });
+    const data = await res.data;
+    if (!data.success) {
+      console.log('failed to update password');
+      return;
+    }
+    target.password.value = '';
+  };
+
   if (!user) return <p>Please login</p>;
 
   if (isLoading) return <p>Loading</p>;
@@ -90,9 +106,15 @@ export default function ProfileEdit() {
             id="profileImage"
             accept="image/jpeg, image/jpg, image/png"
             onChange={changeImage}
+            required
           ></input>
         </div>
         <button type="submit">Upload</button>
+      </form>
+      <form onSubmit={submitPassword}>
+        <label htmlFor="password">New password: </label>
+        <input id="password" type="password" required></input>
+        <button type="submit">Update</button>
       </form>
       <form onSubmit={submitProfile}>
         <div>
@@ -102,6 +124,7 @@ export default function ProfileEdit() {
             id="displayName"
             value={displayName || ''}
             onChange={(e) => setDisplayName(e.target.value)}
+            required
           ></input>
         </div>
         <div>
