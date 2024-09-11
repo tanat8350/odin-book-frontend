@@ -4,8 +4,10 @@ import { Link } from 'react-router-dom';
 import { Post, User } from '../configs/type';
 import { useState } from 'react';
 import PostCard from '../components/PostCard';
+import { useUser } from '../configs/outletContext';
 
 export default function Search() {
+  const { user } = useUser();
   const [search, setSearch] = useState('');
   const [type, setType] = useState('user');
 
@@ -56,11 +58,12 @@ export default function Search() {
                 user.displayName.includes(search) ||
                 user.username.includes(search)
             )
-            .map((user: User) => {
+            .map((filteredUser: User) => {
               return (
-                <li key={user.id}>
-                  <Link to={`/user/${user.id}`}>
-                    {user.displayName} @{user.username}
+                <li key={filteredUser.id}>
+                  <Link to={`/user/${filteredUser.id}`}>
+                    {filteredUser.displayName} @{filteredUser.username}{' '}
+                    {filteredUser.id === user?.id && '(you)'}
                   </Link>
                 </li>
               );
