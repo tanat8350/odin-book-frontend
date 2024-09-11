@@ -68,18 +68,18 @@ export default function Profile() {
     <>
       <h1>{data.displayName}</h1>
       <h2>{data.bio}</h2>
-      {data.id === user?.id ? (
-        <Link to={'/user/edit'}>Edit profile</Link>
-      ) : (
-        <button onClick={clickFollowButton}>
-          {followingStatus === 'following'
-            ? 'Unfollow'
-            : followingStatus === 'pending'
-            ? 'Pending'
-            : 'Follow'}
-        </button>
-      )}
-      {/* // to add follow buttons */}
+      {user &&
+        (data.id === user?.id ? (
+          <Link to={'/user/edit'}>Edit profile</Link>
+        ) : (
+          <button onClick={clickFollowButton}>
+            {followingStatus === 'following'
+              ? 'Unfollow'
+              : followingStatus === 'pending'
+              ? 'Pending'
+              : 'Follow'}
+          </button>
+        ))}
       <p>
         Following {data.following.length} Followed by {data.followedBy.length}
       </p>

@@ -23,8 +23,7 @@ a:hover {
 }
 
 body {
-  margin: 0;
-  display: flex;
+  margin-left: 220px;
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
@@ -73,4 +72,22 @@ button:focus-visible {
 
 .imagePreview {
   max-height: 100px;
+}
+
+nav {
+  height: 100%;
+  width: 200px;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #111;
+  overflow-x: hidden;
+  padding-top: 20px;
+  ul {
+    list-style-type: none;
+    a {
+      font-size: 2rem;
+    }
+  }
 }
