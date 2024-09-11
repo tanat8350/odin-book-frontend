@@ -15,7 +15,7 @@ export interface Context {
 interface Comments {
   length: number;
 }
-export interface PostCardProps {
+export interface Post {
   id: number;
   message: string;
   timestamp: string;

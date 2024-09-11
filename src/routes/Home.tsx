@@ -2,7 +2,7 @@ import { useQuery } from 'react-query';
 import { useUser } from '../configs/outletContext';
 import api from '../configs/api';
 import PostCard from '../components/PostCard';
-import { PostCardProps } from '../configs/type';
+import { Post } from '../configs/type';
 
 export default function Home() {
   const { user } = useUser();
@@ -26,7 +26,7 @@ export default function Home() {
     });
     const data = await res.data;
     if (!data.success) {
-      console.log('fail to post');
+      console.log('failed to post');
       return;
     }
     target.post.value = '';
@@ -45,7 +45,7 @@ export default function Home() {
             <button type="submit">Post</button>
           </form>
           {/* // to change to user home later */}
-          {data.map((post: PostCardProps) => (
+          {data.map((post: Post) => (
             <PostCard
               key={post.id}
               id={post.id}
@@ -59,7 +59,7 @@ export default function Home() {
         </>
       ) : (
         <>
-          {data.map((post: PostCardProps) => (
+          {data.map((post: Post) => (
             <PostCard
               key={post.id}
               id={post.id}

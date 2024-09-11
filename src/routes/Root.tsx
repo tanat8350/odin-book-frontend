@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Link, Outlet } from 'react-router-dom';
 import { type User } from '../configs/type';
 import api from '../configs/api';
@@ -25,7 +25,7 @@ export default function Root() {
             <Link to="/">Home</Link>
           </li>
           <li>
-            <Link to="/search">Explore</Link>
+            <Link to="/search">Search</Link>
           </li>
           {user ? (
             <>

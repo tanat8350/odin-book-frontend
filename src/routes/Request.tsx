@@ -36,7 +36,7 @@ export default function Request() {
                     });
                     const data = await res.data;
                     if (!data.success) {
-                      console.log('fail to accept the request');
+                      console.log('failed to accept the request');
                       return;
                     }
                     refetch();
@@ -56,7 +56,7 @@ export default function Request() {
                     );
                     const data = await res.data;
                     if (!data.success) {
-                      console.log('fail to reject the request');
+                      console.log('failed to reject the request');
                       return;
                     }
                     refetch();

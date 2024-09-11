@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { PostCardProps } from '../configs/type';
+import { Post } from '../configs/type';
 import api from '../configs/api';
 import { useUser } from '../configs/outletContext';
 import { useEffect, useState } from 'react';
@@ -11,7 +11,7 @@ export default function PostCard({
   author,
   likes,
   comments,
-}: PostCardProps) {
+}: Post) {
   const navigate = useNavigate();
   const { user } = useUser();
   const [count, setCount] = useState(likes.length);
@@ -37,7 +37,7 @@ export default function PostCard({
       });
       const data = await res.data;
       if (!data.success) {
-        console.log('fail to unlike a post');
+        console.log('failed to unlike a post');
         return;
       }
       setCount(count - 1);
@@ -48,7 +48,7 @@ export default function PostCard({
       });
       const data = await res.data;
       if (!data.success) {
-        console.log('fail to like a post');
+        console.log('failed to like a post');
         return;
       }
       setCount(count + 1);

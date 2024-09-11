@@ -2,7 +2,7 @@ import { Link, useParams } from 'react-router-dom';
 import api from '../configs/api';
 import { useQuery } from 'react-query';
 import PostCard from '../components/PostCard';
-import { PostCardProps } from '../configs/type';
+import { Post } from '../configs/type';
 import { useUser } from '../configs/outletContext';
 import { useState } from 'react';
 
@@ -23,7 +23,6 @@ export default function Profile() {
           break;
         }
       }
-      console.log(followingStatus);
       if (followingStatus) return data;
       for (const followedBy of data.followedBy) {
         if (followedBy.id === user?.id) {
@@ -31,7 +30,6 @@ export default function Profile() {
           break;
         }
       }
-      console.log(followingStatus);
       return data;
     },
   });
@@ -48,7 +46,7 @@ export default function Profile() {
       });
       const data = await res.data;
       if (!data.success) {
-        console.log('fail to unfollow');
+        console.log('failed to unfollow');
         return;
       }
     } else {
@@ -57,7 +55,7 @@ export default function Profile() {
       });
       const data = await res.data;
       if (!data.success) {
-        console.log('fail to follow');
+        console.log('failed to follow');
         return;
       }
     }
@@ -85,7 +83,7 @@ export default function Profile() {
       <p>
         Following {data.following.length} Followed by {data.followedBy.length}
       </p>
-      {data.posts.map((post: PostCardProps) => (
+      {data.posts.map((post: Post) => (
         <PostCard
           key={post.id}
           id={post.id}

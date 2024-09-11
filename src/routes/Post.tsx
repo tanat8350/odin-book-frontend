@@ -29,7 +29,7 @@ export default function Post() {
     });
     const data = await res.data;
     if (!data.success) {
-      console.log('fail to comment');
+      console.log('failed to comment');
       return;
     }
     target.comment.value = '';
