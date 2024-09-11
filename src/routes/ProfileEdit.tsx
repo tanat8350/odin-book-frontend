@@ -135,6 +135,23 @@ export default function ProfileEdit() {
           </button>
         </div>
         <button type="submit">Update</button>
+        <button
+          onClick={async (e) => {
+            e.preventDefault();
+            const res = await api.delete(`/user/${user?.id}`);
+            const data = await res.data;
+            if (!data.success) {
+              console.log('Failed to delete account');
+              return;
+            }
+            localStorage.removeItem('token');
+            localStorage.removeItem('userid');
+            setUser(null);
+            navigate('/');
+          }}
+        >
+          Delete account
+        </button>
       </form>
     </>
   );

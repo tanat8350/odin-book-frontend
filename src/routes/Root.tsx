@@ -42,7 +42,7 @@ export default function Root() {
               <li>
                 <Link
                   to=""
-                  onClick={async (e) => {
+                  onClick={(e) => {
                     e.preventDefault();
                     localStorage.removeItem('token');
                     localStorage.removeItem('userid');
