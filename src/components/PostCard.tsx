@@ -3,6 +3,7 @@ import { Post } from '../configs/type';
 import api from '../configs/api';
 import { useUser } from '../configs/outletContext';
 import { useEffect, useState } from 'react';
+import blankAvatar from '../assets/blank-avatar.jpg';
 
 export default function PostCard({
   id,
@@ -59,6 +60,7 @@ export default function PostCard({
   return (
     <div>
       <p>
+        <img className="avatar" src={author.profileImage || blankAvatar} />{' '}
         <Link to={`/user/${author.id}`}>
           {author.displayName} @{author.username}
         </Link>{' '}

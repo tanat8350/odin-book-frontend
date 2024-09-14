@@ -23,7 +23,7 @@ a:hover {
 }
 
 body {
-  margin-left: 220px;
+  margin-left: 260px;
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
@@ -74,9 +74,17 @@ button:focus-visible {
   max-height: 100px;
 }
 
+.avatar {
+  height: 35px;
+}
+
+.profileAvatar {
+  height: 100px;
+}
+
 nav {
   height: 100%;
-  width: 200px;
+  width: 240px;
   position: fixed;
   z-index: 1;
   top: 0;
@@ -89,5 +97,16 @@ nav {
     a {
       font-size: 2rem;
     }
+  }
+}
+
+.followContainer {
+  display: flex;
+
+  div {
+    display: flex;
+    flex-direction: column;
+    width: 30vw;
+    padding: 0 8px;
   }
 }

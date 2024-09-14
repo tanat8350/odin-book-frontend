@@ -5,6 +5,7 @@ import PostCard from '../components/PostCard';
 import { Post } from '../configs/type';
 import { useUser } from '../configs/outletContext';
 import { useState } from 'react';
+import blankAvatar from '../assets/blank-avatar.jpg';
 
 export default function Profile() {
   const { user } = useUser();
@@ -66,8 +67,11 @@ export default function Profile() {
 
   return (
     <>
-      <h1>{data.displayName}</h1>
-      <h2>{data.bio}</h2>
+      <img
+        className="profileAvatar"
+        src={data.profileImage || blankAvatar}
+        alt={data.displayName}
+      />{' '}
       {user &&
         (data.id === user?.id ? (
           <Link to={'/user/edit'}>Edit profile</Link>
@@ -80,8 +84,14 @@ export default function Profile() {
               : 'Follow'}
           </button>
         ))}
+      <h1>{data.displayName}</h1>
+      <h2>{data.username}</h2>
+      <h2>{data.bio}</h2>
       <p>
-        Following {data.following.length} Followed by {data.followedBy.length}
+        <Link to={`/user/${data.id}/following`}>{data.following.length}</Link>{' '}
+        Following{' '}
+        <Link to={`/user/${data.id}/follower`}>{data.followedBy.length}</Link>{' '}
+        Followers
       </p>
       {data.posts.map((post: Post) => (
         <PostCard

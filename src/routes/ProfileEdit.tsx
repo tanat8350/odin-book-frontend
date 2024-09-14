@@ -72,9 +72,14 @@ export default function ProfileEdit() {
     e.preventDefault();
     const target = e.target as typeof e.target & {
       password: { value: string };
+      newPassword: { value: string };
+      confirmPassword: { value: string };
     };
     const res = await api.put(`/user/${user?.id}/profile/password`, {
+      username: user?.username,
       password: target.password.value,
+      newPassword: target.newPassword.value,
+      confirmPassword: target.confirmPassword.value,
     });
     const data = await res.data;
     if (!data.success) {
@@ -82,6 +87,8 @@ export default function ProfileEdit() {
       return;
     }
     target.password.value = '';
+    target.newPassword.value = '';
+    target.confirmPassword.value = '';
   };
 
   if (!user) return <p>Please login</p>;
@@ -109,13 +116,25 @@ export default function ProfileEdit() {
             required
           ></input>
         </div>
-        <button type="submit">Upload</button>
+        <button type="submit">Upload image</button>
       </form>
+      <br />
       <form onSubmit={submitPassword}>
-        <label htmlFor="password">New password: </label>
-        <input id="password" type="password" required></input>
-        <button type="submit">Update</button>
+        <div>
+          <label htmlFor="password">Old Password: </label>
+          <input id="password" type="password" required></input>
+        </div>
+        <div>
+          <label htmlFor="newPassword">New password: </label>
+          <input id="newPassword" type="password" required></input>
+        </div>
+        <div>
+          <label htmlFor="confirmPassword">Confirm password: </label>
+          <input id="confirmPassword" type="password" required></input>
+        </div>
+        <button type="submit">Update password</button>
       </form>
+      <br />
       <form onSubmit={submitProfile}>
         <div>
           <label htmlFor="displayName">Display name: </label>

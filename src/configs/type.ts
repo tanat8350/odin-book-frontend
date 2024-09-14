@@ -2,8 +2,11 @@ export interface User {
   id: number;
   username: string;
   displayName: string;
+  bio: string;
   profileImage: string;
   requestPending: User[];
+  followedBy: User[];
+  private: boolean;
 }
 
 export interface Context {

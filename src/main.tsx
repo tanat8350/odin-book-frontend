@@ -12,6 +12,8 @@ import ProfileEdit from './routes/ProfileEdit.tsx';
 import Search from './routes/Search.tsx';
 import Post from './routes/Post.tsx';
 import Request from './routes/Request.tsx';
+import Following from './routes/Following.tsx';
+import Follower from './routes/Follower.tsx';
 
 const router = createBrowserRouter([
   {
@@ -49,6 +51,14 @@ const router = createBrowserRouter([
       {
         path: 'post/:id',
         element: <Post />,
+      },
+      {
+        path: 'user/:id/following',
+        element: <Following />,
+      },
+      {
+        path: 'user/:id/follower',
+        element: <Follower />,
       },
     ],
   },

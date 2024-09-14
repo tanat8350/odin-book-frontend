@@ -5,6 +5,7 @@ import { Post, User } from '../configs/type';
 import { useState } from 'react';
 import PostCard from '../components/PostCard';
 import { useUser } from '../configs/outletContext';
+import blankAvatar from '../assets/blank-avatar.jpg';
 
 export default function Search() {
   const { user } = useUser();
@@ -61,6 +62,11 @@ export default function Search() {
             .map((filteredUser: User) => {
               return (
                 <li key={filteredUser.id}>
+                  <img
+                    className="avatar"
+                    src={filteredUser.profileImage || blankAvatar}
+                    alt={filteredUser.username}
+                  />{' '}
                   <Link to={`/user/${filteredUser.id}`}>
                     {filteredUser.displayName} @{filteredUser.username}{' '}
                     {filteredUser.id === user?.id && '(you)'}
