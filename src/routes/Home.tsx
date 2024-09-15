@@ -1,19 +1,37 @@
-import { useQuery } from 'react-query';
+import { useInfiniteQuery } from 'react-query';
 import { useUser } from '../configs/outletContext';
 import api from '../configs/api';
 import PostCard from '../components/PostCard';
 import { Post } from '../configs/type';
+import { useInView } from 'react-intersection-observer';
+import { useEffect } from 'react';
 
 export default function Home() {
   const { user } = useUser();
 
-  const { data, isLoading, refetch } = useQuery({
-    queryKey: ['posts'],
-    queryFn: async () => {
-      const res = await api.get('/post');
-      return await res.data;
-    },
-  });
+  const { data, fetchNextPage, isFetchingNextPage, isLoading, refetch } =
+    useInfiniteQuery({
+      queryKey: ['posts'],
+      queryFn: async ({ pageParam = 1 }) => {
+        const res = await api.get(`/post/?page=${pageParam}`);
+        const data = res.data;
+        return data;
+      },
+      getNextPageParam: (lastPage, pages) => {
+        if (lastPage.length < 10) {
+          return undefined;
+        }
+        return pages.length + 1;
+      },
+    });
+
+  const { ref, inView } = useInView();
+
+  useEffect(() => {
+    if (inView) {
+      fetchNextPage();
+    }
+  }, [inView, fetchNextPage]);
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,31 +63,41 @@ export default function Home() {
             <button type="submit">Post</button>
           </form>
           {/* // to change to user home later */}
-          {data.map((post: Post) => (
-            <PostCard
-              key={post.id}
-              id={post.id}
-              author={post.author}
-              message={post.message}
-              timestamp={post.timestamp}
-              likes={post.likes}
-              comments={post.comments}
-            />
+          {data?.pages.map((page, index) => (
+            <div key={index}>
+              {page.map((post: Post) => (
+                <PostCard
+                  key={post.id}
+                  id={post.id}
+                  author={post.author}
+                  message={post.message}
+                  timestamp={post.timestamp}
+                  likes={post.likes}
+                  comments={post.comments}
+                />
+              ))}
+            </div>
           ))}
+          <div ref={ref}>{isFetchingNextPage && 'Loading'}</div>
         </>
       ) : (
         <>
-          {data.map((post: Post) => (
-            <PostCard
-              key={post.id}
-              id={post.id}
-              author={post.author}
-              message={post.message}
-              timestamp={post.timestamp}
-              likes={post.likes}
-              comments={post.comments}
-            />
+          {data?.pages.map((page, index) => (
+            <div key={index}>
+              {page.map((post: Post) => (
+                <PostCard
+                  key={post.id}
+                  id={post.id}
+                  author={post.author}
+                  message={post.message}
+                  timestamp={post.timestamp}
+                  likes={post.likes}
+                  comments={post.comments}
+                />
+              ))}
+            </div>
           ))}
+          <div ref={ref}>{isFetchingNextPage && 'Loading'}</div>
         </>
       )}
     </>

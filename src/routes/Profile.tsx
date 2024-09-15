@@ -1,18 +1,23 @@
 import { Link, useParams } from 'react-router-dom';
 import api from '../configs/api';
-import { useQuery } from 'react-query';
+import { useInfiniteQuery, useQuery } from 'react-query';
 import PostCard from '../components/PostCard';
 import { Post } from '../configs/type';
 import { useUser } from '../configs/outletContext';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import blankAvatar from '../assets/blank-avatar.jpg';
+import { useInView } from 'react-intersection-observer';
 
 export default function Profile() {
   const { user } = useUser();
   const { id } = useParams();
   const [followingStatus, setFollowingStatus] = useState('');
 
-  const { data, isLoading, refetch } = useQuery({
+  const {
+    data: userData,
+    isLoading: userIsLoading,
+    refetch: userRefetch,
+  } = useQuery({
     queryKey: ['profile', id],
     queryFn: async () => {
       const res = await api.get(`/user/${id}`);
@@ -34,6 +39,34 @@ export default function Profile() {
       return data;
     },
   });
+
+  const {
+    data: postData,
+    fetchNextPage: postFetchNextPage,
+    isFetchingNextPage: postIsFetchingNextPage,
+    isLoading: postIsLoading,
+  } = useInfiniteQuery({
+    queryKey: ['userPosts', id],
+    queryFn: async ({ pageParam = 1 }) => {
+      const res = await api.get(`/user/${id}/post?page=${pageParam}`);
+      const data = res.data;
+      return data;
+    },
+    getNextPageParam: (lastPage, pages) => {
+      if (lastPage.length < 10) {
+        return undefined;
+      }
+      return pages.length + 1;
+    },
+  });
+
+  const { ref, inView } = useInView();
+
+  useEffect(() => {
+    if (inView) {
+      postFetchNextPage();
+    }
+  }, [inView, postFetchNextPage]);
 
   const clickFollowButton = async () => {
     const body = {
@@ -60,20 +93,20 @@ export default function Profile() {
         return;
       }
     }
-    refetch();
+    userRefetch();
   };
 
-  if (isLoading) return <p>Loading</p>;
+  if (userIsLoading) return <p>Loading</p>;
 
   return (
     <>
       <img
         className="profileAvatar"
-        src={data.profileImage || blankAvatar}
-        alt={data.displayName}
+        src={userData.profileImage || blankAvatar}
+        alt={userData.displayName}
       />{' '}
       {user &&
-        (data.id === user?.id ? (
+        (userData.id === user?.id ? (
           <Link to={'/user/edit'}>Edit profile</Link>
         ) : (
           <button onClick={clickFollowButton}>
@@ -84,26 +117,41 @@ export default function Profile() {
               : 'Follow'}
           </button>
         ))}
-      <h1>{data.displayName}</h1>
-      <h2>{data.username}</h2>
-      <h2>{data.bio}</h2>
+      <h1>{userData.displayName}</h1>
+      <h2>{userData.username}</h2>
+      <h2>{userData.bio}</h2>
       <p>
-        <Link to={`/user/${data.id}/following`}>{data.following.length}</Link>{' '}
+        <Link to={`/user/${userData.id}/following`}>
+          {userData.following.length}
+        </Link>{' '}
         Following{' '}
-        <Link to={`/user/${data.id}/follower`}>{data.followedBy.length}</Link>{' '}
+        <Link to={`/user/${userData.id}/follower`}>
+          {userData.followedBy.length}
+        </Link>{' '}
         Followers
       </p>
-      {data.posts.map((post: Post) => (
-        <PostCard
-          key={post.id}
-          id={post.id}
-          author={post.author}
-          message={post.message}
-          timestamp={post.timestamp}
-          likes={post.likes}
-          comments={post.comments}
-        />
-      ))}
+      {postIsLoading ? (
+        <p>Loading</p>
+      ) : (
+        <>
+          {postData?.pages.map((page, index) => (
+            <div key={index}>
+              {page.map((post: Post) => (
+                <PostCard
+                  key={post.id}
+                  id={post.id}
+                  author={post.author}
+                  message={post.message}
+                  timestamp={post.timestamp}
+                  likes={post.likes}
+                  comments={post.comments}
+                />
+              ))}
+            </div>
+          ))}
+          <div ref={ref}>{postIsFetchingNextPage && 'Loading'}</div>
+        </>
+      )}
     </>
   );
 }

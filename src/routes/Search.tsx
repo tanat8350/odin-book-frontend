@@ -20,7 +20,7 @@ export default function Search() {
         return await res.data;
       }
       if (type === 'post') {
-        const res = await api.get('/post');
+        const res = await api.get('/post/all');
         return await res.data;
       }
     },
