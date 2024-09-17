@@ -21,6 +21,7 @@ interface Comments {
 export interface Post {
   id: number;
   message: string;
+  imageUrl: string;
   timestamp: string;
   author: User;
   likes: User[];

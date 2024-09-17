@@ -12,6 +12,7 @@ export default function PostCard({
   author,
   likes,
   comments,
+  imageUrl,
 }: Post) {
   const navigate = useNavigate();
   const { user } = useUser();
@@ -67,11 +68,19 @@ export default function PostCard({
         {new Date(timestamp).toLocaleString()}
       </p>
       <p>{message}</p>
+      {imageUrl && (
+        <div className="imagePreviewContainer">
+          <img
+            className="postImage"
+            src={imageUrl}
+            alt={`postid_${id}_image`}
+          />
+        </div>
+      )}
       <div>
         <button onClick={clickLikeButton}>
           {isLiked ? 'Liked' : 'Like'}: {count}
         </button>
-        {/* <button onClick={async () => {}}>Liked:{count}</button> */}
         <button onClick={() => navigate(`/post/${id}`)}>
           Comments: {comments.length}
         </button>
