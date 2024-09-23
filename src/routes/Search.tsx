@@ -94,6 +94,9 @@ export default function Search() {
                 timestamp={post.timestamp}
                 likes={post.likes}
                 comments={post.comments}
+                imageUrl={post.imageUrl}
+                originalPost={post.originalPost}
+                repostedBy={post.repostedBy}
               />
             );
           })}

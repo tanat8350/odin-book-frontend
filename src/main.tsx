@@ -14,6 +14,8 @@ import Post from './routes/Post.tsx';
 import Request from './routes/Request.tsx';
 import Following from './routes/Following.tsx';
 import Follower from './routes/Follower.tsx';
+import Repost from './routes/Repost.tsx';
+import RepostedUser from './routes/RepostedUser.tsx';
 
 const router = createBrowserRouter([
   {
@@ -51,6 +53,14 @@ const router = createBrowserRouter([
       {
         path: 'post/:id',
         element: <Post />,
+      },
+      {
+        path: 'repost/:id',
+        element: <Repost />,
+      },
+      {
+        path: 'repost/:id/user',
+        element: <RepostedUser />,
       },
       {
         path: 'user/:id/following',

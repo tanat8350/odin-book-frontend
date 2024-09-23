@@ -50,6 +50,7 @@ export default function Profile() {
     queryFn: async ({ pageParam = 1 }) => {
       const res = await api.get(`/user/${id}/post?page=${pageParam}`);
       const data = res.data;
+      console.log(data);
       return data;
     },
     getNextPageParam: (lastPage, pages) => {
@@ -145,6 +146,9 @@ export default function Profile() {
                   timestamp={post.timestamp}
                   likes={post.likes}
                   comments={post.comments}
+                  imageUrl={post.imageUrl}
+                  originalPost={post.originalPost}
+                  repostedBy={post.repostedBy}
                 />
               ))}
             </div>

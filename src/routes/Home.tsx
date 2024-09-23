@@ -110,10 +110,12 @@ export default function Home() {
                   id={post.id}
                   author={post.author}
                   message={post.message}
-                  imageUrl={post.imageUrl}
                   timestamp={post.timestamp}
                   likes={post.likes}
                   comments={post.comments}
+                  imageUrl={post.imageUrl}
+                  originalPost={post.originalPost}
+                  repostedBy={post.repostedBy}
                 />
               ))}
             </div>
@@ -130,10 +132,12 @@ export default function Home() {
                   id={post.id}
                   author={post.author}
                   message={post.message}
-                  imageUrl={post.imageUrl}
                   timestamp={post.timestamp}
                   likes={post.likes}
                   comments={post.comments}
+                  imageUrl={post.imageUrl}
+                  originalPost={post.originalPost}
+                  repostedBy={post.repostedBy}
                 />
               ))}
             </div>

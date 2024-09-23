@@ -48,6 +48,9 @@ export default function Post() {
         timestamp={data.timestamp}
         likes={data.likes}
         comments={data.comments}
+        imageUrl={data.imageUrl}
+        originalPost={data.originalPost}
+        repostedBy={data.repostedBy}
       />
       {user && (
         <form onSubmit={onSubmit}>

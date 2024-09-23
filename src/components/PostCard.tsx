@@ -4,6 +4,7 @@ import api from '../configs/api';
 import { useUser } from '../configs/outletContext';
 import { useEffect, useState } from 'react';
 import blankAvatar from '../assets/blank-avatar.jpg';
+import RepostCard from './RepostCard';
 
 export default function PostCard({
   id,
@@ -13,6 +14,8 @@ export default function PostCard({
   likes,
   comments,
   imageUrl,
+  originalPost,
+  repostedBy,
 }: Post) {
   const navigate = useNavigate();
   const { user } = useUser();
@@ -77,12 +80,20 @@ export default function PostCard({
           />
         </div>
       )}
+      {originalPost && (
+        <div className="repostContainer">
+          <RepostCard post={originalPost} />
+        </div>
+      )}
       <div>
         <button onClick={clickLikeButton}>
           {isLiked ? 'Liked' : 'Like'}: {count}
         </button>
         <button onClick={() => navigate(`/post/${id}`)}>
           Comments: {comments.length}
+        </button>
+        <button onClick={() => navigate(`/repost/${id}`)}>
+          Repost: {repostedBy?.length}
         </button>
       </div>
     </div>

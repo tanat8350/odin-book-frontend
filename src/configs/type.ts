@@ -26,6 +26,8 @@ export interface Post {
   author: User;
   likes: User[];
   comments: Comments;
+  originalPost?: Post;
+  repostedBy?: User[];
 }
 
 export interface Comment {
