@@ -3,6 +3,8 @@ import api from '../configs/api';
 import React, { useState } from 'react';
 import { useUser } from '../configs/outletContext';
 import { useNavigate } from 'react-router-dom';
+import blankAvatar from '../assets/blank-avatar.jpg';
+import ImageUploadButton from '../components/ImageUploadButton';
 
 export default function ProfileEdit() {
   const navigate = useNavigate();
@@ -10,10 +12,8 @@ export default function ProfileEdit() {
   const [displayName, setDisplayName] = useState('');
   const [bio, setBio] = useState('');
   const [isPrivate, setIsPrivate] = useState(false);
-  const [image, setImage] = useState({
-    src: '' as string | undefined,
-    alt: '' as string,
-  });
+  const [image, setImage] = useState('');
+  const [imageError, setImageError] = useState('');
 
   const { isLoading } = useQuery({
     queryKey: ['profileEdit'],
@@ -30,10 +30,15 @@ export default function ProfileEdit() {
   const submitImage = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const target = e.target as typeof e.target & {
-      profileImage: { files: FileList };
+      imageUploader: { files: FileList; length: number };
     };
+    if (target.imageUploader.files.length === 0) {
+      setImageError('Please select an image');
+      return;
+    }
+    setImageError('');
     const formData = new FormData();
-    formData.append('profileImage', target.profileImage.files[0]);
+    formData.append('profileImage', target.imageUploader.files[0]);
     const res = await api.put(`/user/${user?.id}/profile/image`, formData);
     const data = await res.data;
     if (!data) {
@@ -47,10 +52,7 @@ export default function ProfileEdit() {
     const target = e.target as typeof e.target & {
       files: FileList;
     };
-    setImage({
-      src: URL.createObjectURL(target.files[0]),
-      alt: target.files[0].name,
-    });
+    setImage(URL.createObjectURL(target.files[0]));
   };
 
   const submitProfile = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -97,31 +99,27 @@ export default function ProfileEdit() {
 
   return (
     <>
-      <h1>Profile Edit</h1>
+      <h1>Profile edit</h1>
       <div>
         <img
           className="imagePreview"
-          src={image.src || user?.profileImage || ''}
-          alt={image.alt || ''}
+          id="imagePreview"
+          src={image || user?.profileImage || blankAvatar}
+          alt="profile image"
         />
       </div>
+      {imageError && <p className="errMsg">{imageError}</p>}
       <form onSubmit={submitImage} encType="multipart/form-data">
-        <div>
-          <label htmlFor="profileImage">Profile image: </label>
-          <input
-            type="file"
-            id="profileImage"
-            accept="image/jpeg, image/jpg, image/png"
-            onChange={changeImage}
-            required
-          ></input>
-        </div>
-        <button type="submit">Upload image</button>
+        <ImageUploadButton
+          text="Choose profile image"
+          onChange={changeImage}
+        ></ImageUploadButton>
+        <button type="submit">Upload</button>
       </form>
       <br />
       <form onSubmit={submitPassword}>
         <div>
-          <label htmlFor="password">Old Password: </label>
+          <label htmlFor="password">Old password: </label>
           <input id="password" type="password" required></input>
         </div>
         <div>

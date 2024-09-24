@@ -129,3 +129,25 @@ nav {
 .repostContainer {
   margin-left: 20px;
 }
+
+input[type='file'].imageUploader {
+  display: none;
+}
+
+label.imageUploader {
+  border: 1px solid #ccc;
+  display: inline-block;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+.errMsg {
+  color: red;
+}
+
+textarea {
+  width: 40vw;
+  font-size: 1rem;
+  padding: 8px;
+  resize: none;
+}

@@ -7,6 +7,7 @@ import { useUser } from '../configs/outletContext';
 import { useEffect, useState } from 'react';
 import blankAvatar from '../assets/blank-avatar.jpg';
 import { useInView } from 'react-intersection-observer';
+import NewPostForm from '../components/NewPostForm';
 
 export default function Profile() {
   const { user } = useUser();
@@ -45,6 +46,7 @@ export default function Profile() {
     fetchNextPage: postFetchNextPage,
     isFetchingNextPage: postIsFetchingNextPage,
     isLoading: postIsLoading,
+    refetch: postRefetch,
   } = useInfiniteQuery({
     queryKey: ['userPosts', id],
     queryFn: async ({ pageParam = 1 }) => {
@@ -131,6 +133,7 @@ export default function Profile() {
         </Link>{' '}
         Followers
       </p>
+      <NewPostForm refetch={postRefetch}></NewPostForm>
       {postIsLoading ? (
         <p>Loading</p>
       ) : (
