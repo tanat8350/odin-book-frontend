@@ -90,7 +90,7 @@ export default function PostCard({
           {isLiked ? 'Liked' : 'Like'}: {count}
         </button>
         <button onClick={() => navigate(`/post/${id}`)}>
-          Comments: {comments.length}
+          Comment: {comments.length}
         </button>
         <button onClick={() => navigate(`/repost/${id}`)}>
           Repost: {repostedBy?.length}
