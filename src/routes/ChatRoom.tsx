@@ -41,6 +41,7 @@ export default function ChatRoom() {
     queryFn: async () => {
       const res = await api.get(`/chat/${roomId}`);
       const data = await res.data;
+      console.log(data);
       setMessages([]);
       return data;
     },
@@ -50,7 +51,6 @@ export default function ChatRoom() {
   useEffect(() => {
     if (!roomId) return;
     socket.on('getMessage', (data) => {
-      console.log(data);
       setMessages([...messages, data]);
       // setMessages((prev) => [...prev, data]);
     });

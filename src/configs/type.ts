@@ -46,3 +46,8 @@ export interface ChatMessages {
   author: User;
   timestamp: string;
 }
+export interface ChatList {
+  id: string;
+  chats: ChatMessages[];
+  users: User[];
+}
