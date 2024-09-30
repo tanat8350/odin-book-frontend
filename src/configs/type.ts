@@ -39,3 +39,10 @@ export interface Comment {
 export interface CommentCardProps {
   comment: Comment;
 }
+
+export interface ChatMessages {
+  id?: number;
+  message: string;
+  author: User;
+  timestamp: string;
+}

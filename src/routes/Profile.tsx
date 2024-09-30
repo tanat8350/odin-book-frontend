@@ -1,4 +1,4 @@
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import api from '../configs/api';
 import { useInfiniteQuery, useQuery } from 'react-query';
 import PostCard from '../components/PostCard';
@@ -10,6 +10,7 @@ import { useInView } from 'react-intersection-observer';
 import NewPostForm from '../components/NewPostForm';
 
 export default function Profile() {
+  const navigate = useNavigate();
   const { user } = useUser();
   const { id } = useParams();
   const [followingStatus, setFollowingStatus] = useState('');
@@ -112,13 +113,18 @@ export default function Profile() {
         (userData.id === user?.id ? (
           <Link to={'/user/edit'}>Edit profile</Link>
         ) : (
-          <button onClick={clickFollowButton}>
-            {followingStatus === 'following'
-              ? 'Unfollow'
-              : followingStatus === 'pending'
-              ? 'Pending'
-              : 'Follow'}
-          </button>
+          <>
+            <button onClick={clickFollowButton}>
+              {followingStatus === 'following'
+                ? 'Unfollow'
+                : followingStatus === 'pending'
+                ? 'Pending'
+                : 'Follow'}
+            </button>
+            <button onClick={() => navigate(`/chat/${userData.id}`)}>
+              Chat
+            </button>
+          </>
         ))}
       <h1>{userData.displayName}</h1>
       <h2>{userData.username}</h2>

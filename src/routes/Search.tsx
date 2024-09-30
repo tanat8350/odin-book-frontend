@@ -117,7 +117,7 @@ export default function Search() {
             setType('allposts');
           }}
         >
-          All users
+          All posts
         </button>
       </div>
       {(type === 'user' || type === 'post') && (

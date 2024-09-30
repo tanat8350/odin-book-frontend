@@ -27,6 +27,9 @@ export default function Root() {
           <li>
             <Link to="/search">Search</Link>
           </li>
+          <li>
+            <Link to="/chat">Chat</Link>
+          </li>
           {user ? (
             <>
               <li>

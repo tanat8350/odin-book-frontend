@@ -16,6 +16,8 @@ import Following from './routes/Following.tsx';
 import Follower from './routes/Follower.tsx';
 import Repost from './routes/Repost.tsx';
 import RepostedUser from './routes/RepostedUser.tsx';
+import ChatRoom from './routes/ChatRoom.tsx';
+import Chat from './routes/Chat.tsx';
 
 const router = createBrowserRouter([
   {
@@ -37,6 +39,14 @@ const router = createBrowserRouter([
       {
         path: 'search',
         element: <Search />,
+      },
+      {
+        path: 'chat',
+        element: <Chat />,
+      },
+      {
+        path: 'chat/:id',
+        element: <ChatRoom />,
       },
       {
         path: 'request',
